@@ -98,7 +98,13 @@ class VMX_vcp(vrnetlab.VM):
             if ridx == 1:
                 if self.install_mode:
                     self.logger.info("requesting power-off")
-                    self.wait_write("cli", None)
+                    self.wait_write("/usr/sbin/mgd \"-ZS\" \"intialsetup-commit\" \"ex_series_auto_config\"", None)
+                    time.sleep(10)
+                    self.wait_write("cli", "root@(%|:~ #)")
+                    self.wait_write("configure", '>', 10)
+                    self.wait_write("delete chassis auto-image-upgrade")
+                    self.wait_write("commit")
+                    self.wait_write("exit")
                     self.wait_write("request system power-off", '>')
                     self.wait_write("yes", 'Power Off the system')
                     self.running = True
