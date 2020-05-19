@@ -182,7 +182,7 @@ class VMX_vfpc(vrnetlab.VM):
         self.meshnet = meshnet
 
         self.nic_type = "virtio-net-pci"
-        self.qemu_args.extend(["-cpu", "SandyBridge", "-M", "pc", "-smp", "3"])
+        self.qemu_args.extend(["-cpu", "SandyBridge", "-M", "pc", "-smp", "8"])
         # add metadata image if it exists
         if os.path.exists("/vmx/metadata-usb-fpc0.img"):
             self.qemu_args.extend(
