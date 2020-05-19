@@ -37,7 +37,7 @@ logging.Logger.trace = trace
 
 class VMX_vcp(vrnetlab.VM):
     def __init__(self, username, password, image, install_mode=False):
-        super(VMX_vcp, self).__init__(username, password, disk_image=image, ram=2048)
+        super(VMX_vcp, self).__init__(username, password, disk_image=image, ram=4096)
         self.install_mode = install_mode
         self.num_nics = 0
         self.qemu_args.extend(["-drive", "if=ide,file=/vmx/vmxhdd.img"])
@@ -202,7 +202,7 @@ class VMX_vfpc(vrnetlab.VM):
         res.extend(["-netdev",
                     "tap,ifname=vfpc-int,id=vfpc-int,script=no,downscript=no"])
 
-        if self.version in ('15.1F6.9', '16.1R2.11', '17.2R1.13'):
+        if self.version in ('15.1F6.9', '16.1R2.11', '17.2R1.13', '18.3R1.9'):
             # dummy interface for some vMX versions - not sure why vFPC wants
             # it but without it we get a misalignment
             res.extend(["-device", "virtio-net-pci,netdev=dummy,mac=%s" %
@@ -339,5 +339,8 @@ if __name__ == '__main__':
         vr = VMX_installer(args.username, args.password)
         vr.install()
     else:
+        logger.info("wait for nsm 5s ... ")
+        time.sleep(5)
+        logger.info("all done!")
         vr = VMX(args.username, args.password, meshnet=args.meshnet)
         vr.start()
